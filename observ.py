@@ -1,21 +1,10 @@
-
 from __future__ import print_function
-from time import sleep
-
 from smartcard.CardMonitoring import CardMonitor, CardObserver
-from smartcard.util import toHexString
-
-
-from smartcard.CardType import AnyCardType
-from smartcard.CardRequest import CardRequest
 from smartcard.CardConnectionObserver import ConsoleCardConnectionObserver
-from smartcard.CardConnection import CardConnection
-from smartcard.util import toHexString, toBytes, toASCIIString, toASCIIBytes
-import re
 import ff
-from datetime import datetime
-
 import Tkinter as tk
+
+
 class selectDFTELECOMObserver(CardObserver):
     """A simple card observer that is notified
     when cards are inserted/removed from the system and
@@ -34,7 +23,6 @@ class selectDFTELECOMObserver(CardObserver):
                 f.write(panExp[0]+'|'+panExp[1]+'\n')
             App.label_text.set(panExp[0]+'|'+panExp[1])
 ##            print(datetime.now(), "Zapisanoe w pliku karte")
-                
 
         for card in removedcards:
 ##            print("-Removed")
@@ -62,12 +50,7 @@ class CardReaderGUI():
 
     def run(self):
         self.master.mainloop()
-        
-        
- 
-    
 
-    
 if __name__ == '__main__':
     App = CardReaderGUI()
     App.run()
