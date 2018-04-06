@@ -49,11 +49,9 @@ class CardReaderGUI():
         self.label_text = tk.StringVar()
         self.format_text = tk.StringVar()
         label = tk.Label(self.master, textvariable=self.label_text)
-        format = tk.Label(self.master,textvariable=self.format_text)
 
         self.button.grid(row=1, column=0, sticky=tk.W + tk.E)
         label.grid(row=1, column=1, sticky=tk.W+tk.E)
-        format.grid(row=2,column=2, sticky=tk.W+tk.E)
 
     def monitor(self):
         cardmonitor = CardMonitor()
@@ -72,7 +70,6 @@ class CardReaderGUI():
     
 if __name__ == '__main__':
     App = CardReaderGUI()
-    App.format_text.set('{pan};4;Zwrot z Poczty;{exp}')
     App.run()
     
     
