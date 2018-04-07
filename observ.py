@@ -30,22 +30,42 @@ class selectDFTELECOMObserver(CardObserver):
             
             
 class CardReaderGUI():
+    MODES = [
+        ('Zwrot z Poczty - Nowe wydania', 'ZPNE'),
+        ('Zwrot z Poczty - Wznowienia', 'ZPWZN'),
+        ('Zwrot z instytucji finansowej', 'ZIF')
+    ]
+
+    FORMATS = {
+        'ZPNE' :{'FILE':'PAN_{0:%Y}_{0:%m}_{0:%d}_NE.TXT'   ,'RECORD':'{0};4;Zwrot z Poczty'},
+        'ZPWZN':{'FILE':'PAN_{0:%Y}_{0:%m}_{0:%d}_WZN.TXT'  ,'RECORD':'{0};4;Zwrot z Poczty'},
+        'ZIF' :{'FILE':'PAN_{0:%Y}_{0:%m}_{0:%d}_ZIF.TXT'   ,'RECORD':'{0};4;Zwrot z Instytucji Finansowej;{1}'}
+    }
 
     def __init__(self):
         self.master = tk.Tk()
         self.button = tk.Button(self.master, text="Start", command=self.monitor)
         self.label_text = tk.StringVar()
-        self.format_text = tk.StringVar()
-        label = tk.Label(self.master, textvariable=self.label_text)
+        self.option_value = tk.StringVar()
+        self.label = tk.Label(self.master, textvariable=self.label_text)
 
         self.button.grid(row=1, column=0, sticky=tk.W + tk.E)
-        label.grid(row=1, column=1, sticky=tk.W+tk.E)
+        self.label.grid(row=2, column=0, sticky=tk.W+tk.E)
+
+        self.createOpBtns(modes=self.MODES, variable=self.option_value, row=3)
+        self.option_value.set('ZIF')
+
+    def createOpBtns(self, modes, variable, row):
+        for text, value in modes:
+            optBtn = tk.Radiobutton(self.master, text=text,
+                        variable=variable, value=value)
+            optBtn.grid(row=row, column=0, sticky=tk.W)
+            row = row + 1
 
     def monitor(self):
         cardmonitor = CardMonitor()
         selectobserver = selectDFTELECOMObserver()
         cardmonitor.addObserver(selectobserver)
-        
         self.button.config(state=tk.DISABLED)
 
     def run(self):
