@@ -3,6 +3,7 @@ from smartcard.CardMonitoring import CardMonitor, CardObserver
 from smartcard.CardConnectionObserver import ConsoleCardConnectionObserver
 import ff
 import Tkinter as tk
+from datetime import date
 
 
 class selectDFTELECOMObserver(CardObserver):
@@ -17,12 +18,13 @@ class selectDFTELECOMObserver(CardObserver):
     def update(self, observable, actions):
         (addedcards, removedcards) = actions
         for card in addedcards:
-            cper=ff.CardPanExpReader()
-            panExp=cper.getPanExp()
-            with open("numerykart.txt","w") as f:
-                f.write(panExp[0]+'|'+panExp[1]+'\n')
+            cper = ff.CardPanExpReader()
+            panExp = cper.getPanExp()
+            record = App.FORMATS[App.option_value.get()]['RECORD'].format(panExp[0], panExp[1])
+            fileName = App.FORMATS[App.option_value.get()]['FILE'].format(date.today())
+            with open(fileName,"a") as f:
+                f.write(record+'\n')
             App.label_text.set(panExp[0]+'|'+panExp[1])
-##            print(datetime.now(), "Zapisanoe w pliku karte")
 
         for card in removedcards:
 ##            print("-Removed")
