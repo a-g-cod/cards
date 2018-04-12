@@ -46,20 +46,25 @@ class CardReaderGUI():
 
     def __init__(self):
         self.master = tk.Tk()
-        self.button = tk.Button(self.master, text="Start", command=self.monitor)
+        self.master.resizable(0,0)
+        canvas = tk.Canvas(self.master, bg="blue", height=250, width=300)
+        canvas.grid(row=0, column=1)
+        frame = tk.Frame(self.master)
+        frame.grid(row=0, column=0, sticky="n")
+        self.button = tk.Button(frame, text="Start", command=self.monitor)
         self.label_text = tk.StringVar()
         self.option_value = tk.StringVar()
-        self.label = tk.Label(self.master, textvariable=self.label_text)
+        self.label = tk.Label(frame, textvariable=self.label_text)
 
         self.button.grid(row=1, column=0, sticky=tk.W + tk.E)
         self.label.grid(row=2, column=0, sticky=tk.W+tk.E)
 
-        self.createOpBtns(modes=self.MODES, variable=self.option_value, row=3)
+        self.createOpBtns(master=frame, modes=self.MODES, variable=self.option_value, row=3)
         self.option_value.set('ZIF')
 
-    def createOpBtns(self, modes, variable, row):
+    def createOpBtns(self, master, modes, variable, row):
         for text, value in modes:
-            optBtn = tk.Radiobutton(self.master, text=text,
+            optBtn = tk.Radiobutton(master, text=text,
                         variable=variable, value=value)
             optBtn.grid(row=row, column=0, sticky=tk.W)
             row = row + 1
