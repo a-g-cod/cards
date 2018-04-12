@@ -4,8 +4,7 @@ from smartcard.CardConnectionObserver import ConsoleCardConnectionObserver
 import ff
 import Tkinter as tk
 from datetime import date
-
-
+from PIL import Image, ImageTk
 class selectDFTELECOMObserver(CardObserver):
     """A simple card observer that is notified
     when cards are inserted/removed from the system and
@@ -47,20 +46,31 @@ class CardReaderGUI():
     def __init__(self):
         self.master = tk.Tk()
         self.master.resizable(0,0)
-        canvas = tk.Canvas(self.master, bg="blue", height=250, width=300)
-        canvas.grid(row=0, column=1)
+        self.createLogo(self.master, width=190, height=50, file='zdj.png')
         frame = tk.Frame(self.master)
-        frame.grid(row=0, column=0, sticky="n")
+        frame.pack()
         self.button = tk.Button(frame, text="Start", command=self.monitor)
         self.label_text = tk.StringVar()
-        self.option_value = tk.StringVar()
         self.label = tk.Label(frame, textvariable=self.label_text)
+        self.option_value = tk.StringVar()
+
+
 
         self.button.grid(row=1, column=0, sticky=tk.W + tk.E)
         self.label.grid(row=2, column=0, sticky=tk.W+tk.E)
 
         self.createOpBtns(master=frame, modes=self.MODES, variable=self.option_value, row=3)
         self.option_value.set('ZIF')
+
+    def createLogo(self, master, width, height, file):
+        canvas = tk.Canvas(master, height=height, width=width)
+        image = Image.open(file)
+        image.thumbnail((width, height))
+        photo = ImageTk.PhotoImage(image)
+        background_label = tk.Label(canvas, image=photo)
+        background_label.photo = photo
+        background_label.place(x=0, y=0, relwidth=1, relheight=1)
+        canvas.pack()
 
     def createOpBtns(self, master, modes, variable, row):
         for text, value in modes:
@@ -80,6 +90,7 @@ class CardReaderGUI():
 
 if __name__ == '__main__':
     App = CardReaderGUI()
+    App.master.title('Alior')
     App.run()
     
     
